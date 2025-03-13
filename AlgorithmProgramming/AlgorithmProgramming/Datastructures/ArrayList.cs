@@ -4,7 +4,7 @@ namespace AlgorithmProgramming.Datastructures
 {
     public class ArrayList : ICloneable, IList
     {
-        private object?[] items;
+        private object?[] items = new object?[0];
 
         public bool IsFixedSize => false;
 
@@ -55,8 +55,11 @@ namespace AlgorithmProgramming.Datastructures
         /// </summary>
         public void Clear()
         {
-            Array.Clear(items, 0, Count);
-            Count = 0;
+            if (Count > 0)
+            {
+                Array.Clear(items, 0, Count);
+                Count = 0;
+            }
         }
 
         /// <summary>

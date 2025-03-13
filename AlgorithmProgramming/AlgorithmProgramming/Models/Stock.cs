@@ -15,4 +15,9 @@
             Price = price;
         }
     }
+
+    public class StockList
+    {
+        public List<Stock> Stocks { get; set; }
+    }
 }
