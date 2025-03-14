@@ -4,7 +4,8 @@
              x:Class="AlgorithmProgramming.MainPage"
              xmlns:viewModels="clr-namespace:AlgorithmProgramming.ViewModels"
              xmlns:models="clr-namespace:AlgorithmProgramming.Models"
-             x:DataType="viewModels:MainPageViewModel">
+             x:DataType="viewModels:MainPageViewModel" 
+             Shell.NavBarIsVisible="false">
     <ContentPage.BindingContext>
         <viewModels:MainPageViewModel/>
     </ContentPage.BindingContext>
@@ -15,10 +16,10 @@
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
         <Button
-            Text="Json input"
+            Text="Input JSON"
             Command="{Binding PickFileCommand}"
             HorizontalOptions="Start"
-            VerticalOptions="Start"
+            VerticalOptions="Center"
             Grid.Row="0"/>
 
         <CollectionView ItemsSource="{Binding Stocks}" Grid.Row="1">
