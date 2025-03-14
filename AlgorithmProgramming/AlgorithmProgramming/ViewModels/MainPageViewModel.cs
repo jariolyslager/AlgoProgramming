@@ -15,7 +15,6 @@ namespace AlgorithmProgramming.ViewModels
     public partial class MainPageViewModel
     {
         public Datastructures.ArrayList Stocks { get; set; } = new Datastructures.ArrayList();
-        public ObservableCollection<Stock> StocksTable { get; set; } = new ObservableCollection<Stock>();
 
         [RelayCommand]
         public async Task<FileResult> PickFile(PickOptions options)
@@ -31,11 +30,9 @@ namespace AlgorithmProgramming.ViewModels
                         Console.WriteLine(jsonString);
                         StockList stockList = JsonSerializer.Deserialize<StockList>(jsonString);
                         Stocks.Clear();
-                        StocksTable.Clear();
                         foreach (var stock in stockList.Stocks)
                         {
                             Stocks.Add(stock);
-                            StocksTable.Add(stock);
                         }
                     }
                 }

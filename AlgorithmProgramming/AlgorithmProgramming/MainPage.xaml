@@ -9,15 +9,19 @@
         <viewModels:MainPageViewModel/>
     </ContentPage.BindingContext>
 
-    <VerticalStackLayout
-        Padding="10, 10">
+    <Grid Padding="10" RowSpacing="5">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="100" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
         <Button
             Text="Json input"
             Command="{Binding PickFileCommand}"
             HorizontalOptions="Start"
-            VerticalOptions="Start" />
+            VerticalOptions="Start"
+            Grid.Row="0"/>
 
-        <CollectionView ItemsSource="{Binding StocksTable}">
+        <CollectionView ItemsSource="{Binding Stocks}" Grid.Row="1">
             <CollectionView.ItemTemplate>
                 <DataTemplate x:DataType="models:Stock">
                     <Grid Padding="10" ColumnDefinitions="*,*,*,*">
@@ -29,5 +33,5 @@
                 </DataTemplate>
             </CollectionView.ItemTemplate>
         </CollectionView>
-    </VerticalStackLayout>
+    </Grid>
 </ContentPage>

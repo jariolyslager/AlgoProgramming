@@ -1,10 +1,13 @@
 ﻿using System.Collections;
+using System.Collections.Specialized;
 
 namespace AlgorithmProgramming.Datastructures
 {
-    public class ArrayList : ICloneable, IList
+    public class ArrayList : ICloneable, IList, INotifyCollectionChanged
     {
         private object?[] items = new object?[0];
+
+        public event NotifyCollectionChangedEventHandler? CollectionChanged;
 
         public bool IsFixedSize => false;
 
@@ -35,6 +38,7 @@ namespace AlgorithmProgramming.Datastructures
                 if (index < 0 || index >= Count)
                     throw new ArgumentOutOfRangeException(nameof(index));
                 items[index] = value;
+                CollectionChanged?.Invoke(this, new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Reset));
             }
         }
 
@@ -47,6 +51,7 @@ namespace AlgorithmProgramming.Datastructures
         {
             EnsureCapacity(Count + 1);
             items[Count] = value;
+            CollectionChanged?.Invoke(this, new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Add, value));
             return Count++;
         }
 
@@ -59,6 +64,7 @@ namespace AlgorithmProgramming.Datastructures
             {
                 Array.Clear(items, 0, Count);
                 Count = 0;
+                CollectionChanged?.Invoke(this, new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Reset));
             }
         }
 
@@ -162,6 +168,7 @@ namespace AlgorithmProgramming.Datastructures
             Array.Copy(items, index, items, index + 1, Count - index);
             items[index] = value;
             Count++;
+            CollectionChanged?.Invoke(this, new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Add, value));
         }
 
         /// <summary>
@@ -195,6 +202,7 @@ namespace AlgorithmProgramming.Datastructures
                 Array.Copy(items, index + 1, items, index, Count - index);
             }
             items[Count] = null;
+            CollectionChanged?.Invoke(this, new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Remove));
         }
     }
 }
