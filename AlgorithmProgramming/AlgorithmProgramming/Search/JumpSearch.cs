@@ -9,19 +9,32 @@ namespace AlgorithmProgramming.Search
 {
     public class JumpSearch
     {
-        public int SearchHistoricValues(int[] arr, int key) 
+        public static int SearchJump<T>(T[] arr, T key) where T : IComparable<T> 
         { 
             int ArraySize = arr.Length;
             int prev = 0;
             int step = (int) Math.Sqrt(ArraySize);
 
-            while (step < ArraySize - 1 && arr[step] <= key)
+            while (prev < ArraySize && arr[Math.Min(step, ArraySize) - 1].CompareTo(key) < 0)
             {
                 prev = step;
                 step += (int)Math.Sqrt(ArraySize);
+                if (prev >= ArraySize) 
+                {
+                    return -1; //Key is not in array
+                }
             }
 
-            return 1;
+            while (prev < Math.Min(step, ArraySize) && arr[prev].CompareTo(key) < 1) 
+            {
+                if (arr[prev].Equals(key))
+                {
+                    return prev;
+                }
+                prev++;
+            }
+
+            return 1; // Key not found
         }
     }
 }
