@@ -13,14 +13,42 @@ namespace AlgorithmProgramming.Datastructures
     {
         private struct Entry
         {
+            public int hashCode;
             public int next;
             public TKey key;
             public TValue? value;
+            public bool isDeleted;
         }
 
         private Entry[]? entries;
+        private int capacity;
+        private int threshold;
+        private const double LoadFactor = 1.0;
 
-        public TValue this[TKey key] { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public HashMap(int initialCapacity = 16)
+        {
+            capacity = initialCapacity;
+            entries = new Entry[capacity];
+            threshold = (int)(capacity * LoadFactor);
+        }
+
+        private int GetBucketIndex(TKey key) => Math.Abs(key.GetHashCode()) % capacity;
+
+        public TValue this[TKey key]
+        {
+            get
+            {
+                if (TryGetValue(key, out TValue value))
+                {
+                    return value;
+                }
+                else
+                {
+                    throw new KeyNotFoundException();
+                };
+            }
+            set => Add(key, value);
+        }
 
         public ICollection<TKey> Keys { get; private set; }
 
@@ -60,7 +88,7 @@ namespace AlgorithmProgramming.Datastructures
 
         public void Clear()
         {
-            entries = [];
+            entries = new Entry[capacity];
             Keys.Clear();
             Values.Clear();
             Count = 0;
@@ -104,7 +132,10 @@ namespace AlgorithmProgramming.Datastructures
         {
             foreach (var entry in entries)
             {
-                yield return new KeyValuePair<TKey, TValue>(entry.key, entry.value);
+                if (entry.hashCode != 0 && !entry.isDeleted)
+                {
+                    yield return new KeyValuePair<TKey, TValue>(entry.key, entry.value);
+                }
             }
         }
 
@@ -120,14 +151,17 @@ namespace AlgorithmProgramming.Datastructures
 
         public bool Remove(TKey key)
         {
-            foreach(var entry in entries)
+            int index = GetBucketIndex(key);
+
+            while (entries[index].hashCode != 0)
             {
-                if (entry.key.Equals(key))
+                if (!entries[index].isDeleted && entries[index].key.Equals(key))
                 {
-                    
+                    entries[index].isDeleted = true;
                     Count--;
                     return true;
                 }
+                index = (index + 1) % capacity;
             }
             return false;
         }
@@ -137,9 +171,44 @@ namespace AlgorithmProgramming.Datastructures
             throw new NotImplementedException();
         }
 
+        private void Resize()
+        {
+            int newCapacity = capacity * 2;
+            var newEntries = new Entry[newCapacity];
+
+            foreach (var entry in entries)
+            {
+                if (entry.hashCode != 0 && !entry.isDeleted)
+                {
+                    int newIndex = Math.Abs(entry.hashCode) % newCapacity;
+                    while (newEntries[newIndex].hashCode != 0)
+                        newIndex = (newIndex + 1) % newCapacity;
+
+                    newEntries[newIndex] = entry;
+                }
+            }
+
+            capacity = newCapacity;
+            entries = newEntries;
+            threshold = (int)(capacity * LoadFactor);
+        }
+
         public bool TryGetValue(TKey key, [MaybeNullWhen(false)] out TValue value)
         {
-            throw new NotImplementedException();
+            int index = GetBucketIndex(key);
+
+            while (entries[index].hashCode != 0)
+            {
+                if (!entries[index].isDeleted && entries[index].key.Equals(key))
+                {
+                    value = entries[index].value;
+                    return true;
+                }
+                index = (index + 1) % capacity;
+            }
+
+            value = default!;
+            return false;
         }
 
         IEnumerator IEnumerable.GetEnumerator()
