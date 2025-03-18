@@ -1,20 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
+﻿using System.ComponentModel;
+using System.Runtime.CompilerServices;
 using System.Text.Json;
-using System.Threading.Tasks;
 using AlgorithmProgramming.Models;
-using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using Microsoft.Maui.Storage;
 
 namespace AlgorithmProgramming.ViewModels
 {
-    public partial class MainPageViewModel
+    public partial class MainPageViewModel : INotifyPropertyChanged
     {
         public Datastructures.ArrayList Stocks { get; set; } = new Datastructures.ArrayList();
+        public Datastructures.DoublyLinkedList<Stock> StocksLinkedList { get; set; } = new Datastructures.DoublyLinkedList<Stock>();
+
+        public event PropertyChangedEventHandler? PropertyChanged;
 
         [RelayCommand]
         public async Task<FileResult> PickFile(PickOptions options)
@@ -33,7 +30,10 @@ namespace AlgorithmProgramming.ViewModels
                         foreach (var stock in stockList.Stocks)
                         {
                             Stocks.Add(stock);
+                            StocksLinkedList.Add(stock);
                         }
+                        OnPropertyChanged(nameof(Stocks));
+                        OnPropertyChanged(nameof(StocksLinkedList));
                     }
                 }
 
@@ -45,6 +45,10 @@ namespace AlgorithmProgramming.ViewModels
             }
 
             return null;
+        }
+        protected void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 }
