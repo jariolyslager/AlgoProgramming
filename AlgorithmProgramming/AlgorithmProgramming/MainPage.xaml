@@ -14,6 +14,7 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="100" />
             <RowDefinition Height="*" />
+            <RowDefinition Height="100" />
         </Grid.RowDefinitions>
         <Button
             Text="Input JSON"
@@ -34,5 +35,13 @@
                 </DataTemplate>
             </CollectionView.ItemTemplate>
         </CollectionView>
+        <Grid Grid.Row="2">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            <Label Grid.Row="0"  Text="{Binding Stocks.Count, StringFormat='Aantal objecten in ArrayList: {0:F0}'}" />
+            <Label Grid.Row="1" Text="{Binding StocksLinkedList.Count, StringFormat='Aantal objecten in DoublyLinkedList: {0:F0}'}" />
+        </Grid>
     </Grid>
 </ContentPage>
