@@ -4,8 +4,8 @@ namespace AlgorithmProgramming.Datastructures
 {
     public class DoublyLinkedList<T> : ICollection<T>
     {
-        private Node Head;
-        private Node Tail;
+        public Node Head { get; set; }
+        public Node Tail { get; set; }
 
         public class Node
         {
