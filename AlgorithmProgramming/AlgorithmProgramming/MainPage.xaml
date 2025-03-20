@@ -12,26 +12,33 @@
 
     <Grid Padding="10" RowSpacing="5">
         <Grid.RowDefinitions>
-            <RowDefinition Height="100" />
+            <RowDefinition Height="50" />
+            <RowDefinition Height="50" />
             <RowDefinition Height="*" />
             <RowDefinition Height="100" />
         </Grid.RowDefinitions>
         <HorizontalStackLayout Grid.Row="0" HorizontalOptions="Start" VerticalOptions="Center" Spacing="5">
             <Button
-             Text="Input JSON"
-             Command="{Binding PickFileCommand}"/>
+                 Text="Input JSON"
+                 Command="{Binding PickFileCommand}"/>
             <Button
-             Text="ArrayList Quicksort"
-             Command="{Binding QuickSortCommand}"/>
+                 Text="ArrayList Quicksort"
+                 Command="{Binding QuickSortCommand}"/>
             <Button
-             Text="ArrayList Table"
-             Command="{Binding SetTableToArrayListCommand}"/>
+                 Text="ArrayList Table"
+                 Command="{Binding SetTableToArrayListCommand}"/>
             <Button
-             Text="DoublyLinkedList Table"
-             Command="{Binding SetTableToDoublyLinkedListCommand}"/>
+                 Text="DoublyLinkedList Table"
+                 Command="{Binding SetTableToDoublyLinkedListCommand}"/>
+        </HorizontalStackLayout>
+        <HorizontalStackLayout Grid.Row="1" HorizontalOptions="Start" VerticalOptions="Center" Spacing="5">
+                <Entry Placeholder="Search" Text="{Binding SearchText, StringFormat='{0:F0}'}" />
+            <Button
+                Text="ArrayList JumpSearch"
+                Command="{Binding JumpSearchCommand}" />
         </HorizontalStackLayout>
 
-        <CollectionView ItemsSource="{Binding StockCollection}" Grid.Row="1">
+        <CollectionView ItemsSource="{Binding StockCollection}" Grid.Row="2">
             <CollectionView.ItemTemplate>
                 <DataTemplate x:DataType="models:Stock">
                     <Grid Padding="10" ColumnDefinitions="*,*,*,*">
@@ -43,7 +50,7 @@
                 </DataTemplate>
             </CollectionView.ItemTemplate>
         </CollectionView>
-        <Grid Grid.Row="2">
+        <Grid Grid.Row="3">
             <Grid.RowDefinitions>
                 <RowDefinition Height="*" />
                 <RowDefinition Height="*" />

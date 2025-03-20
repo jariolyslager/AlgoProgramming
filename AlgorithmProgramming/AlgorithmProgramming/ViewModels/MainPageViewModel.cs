@@ -15,8 +15,9 @@ namespace AlgorithmProgramming.ViewModels
         public Datastructures.DoublyLinkedList<Stock> StocksLinkedList { get; set; } = new Datastructures.DoublyLinkedList<Stock>();
         public ObservableCollection<Stock> StockCollection { get; set; } = new ObservableCollection<Stock>();
         public string LastAction { get; set; } = "Geen";
-        public string LastActionString => LastAction + " " + stopwatch.ElapsedTicks + " ticks";
+        public string LastActionString => LastAction + " " + stopwatch.ElapsedMilliseconds + " ms";
         public Stopwatch stopwatch = new Stopwatch();
+        public string SearchText { get; set; } = "";
         public event PropertyChangedEventHandler? PropertyChanged;
 
         [RelayCommand]
@@ -64,6 +65,7 @@ namespace AlgorithmProgramming.ViewModels
         public void QuickSort()
         {
             LastAction = "ArrayList quicksort";
+            stopwatch.Reset();
             stopwatch.Start();
             Quicksort.Sort(Stocks);
             stopwatch.Stop();
@@ -89,6 +91,12 @@ namespace AlgorithmProgramming.ViewModels
             {
                 StockCollection.Add(stock);
             }
+        }
+
+        [RelayCommand]
+        public void JumpSearch()
+        {
+            
         }
     }
 }
