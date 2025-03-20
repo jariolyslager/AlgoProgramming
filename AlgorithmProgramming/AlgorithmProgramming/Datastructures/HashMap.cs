@@ -30,6 +30,8 @@ namespace AlgorithmProgramming.Datastructures
             capacity = initialCapacity;
             entries = new Entry[capacity];
             threshold = (int)(capacity * LoadFactor);
+            Keys = new List<TKey>();
+            Values = new List<TValue>();
         }
 
         private int GetBucketIndex(TKey key) => Math.Abs(key.GetHashCode()) % capacity;
@@ -45,7 +47,7 @@ namespace AlgorithmProgramming.Datastructures
                 else
                 {
                     throw new KeyNotFoundException();
-                };
+                }
             }
             set => Add(key, value);
         }
@@ -64,26 +66,38 @@ namespace AlgorithmProgramming.Datastructures
 
         public void Add(TKey key, TValue value)
         {
-            Entry entry = new Entry
+            if (Count >= threshold)
             {
+                Resize();
+            }
+
+            int index = GetBucketIndex(key);
+            while (entries[index].hashCode != 0 && !entries[index].isDeleted)
+            {
+                if (entries[index].key.Equals(key))
+                {
+                    throw new ArgumentException("An item with the same key has already been added.");
+                }
+                index = (index + 1) % capacity;
+            }
+
+            entries[index] = new Entry
+            {
+                hashCode = key.GetHashCode(),
                 key = key,
                 value = value,
-                next = -1
+                next = -1,
+                isDeleted = false
             };
-            entries[Count] = entry;
+
+            Keys.Add(key);
+            Values.Add(value);
             Count++;
         }
 
         public void Add(KeyValuePair<TKey, TValue> item)
         {
-            Entry entry = new Entry
-            {
-                key = item.Key,
-                value = item.Value,
-                next = -1
-            };
-            entries[Count] = entry;
-            Count++;
+            Add(item.Key, item.Value);
         }
 
         public void Clear()
@@ -96,31 +110,20 @@ namespace AlgorithmProgramming.Datastructures
 
         public bool Contains(KeyValuePair<TKey, TValue> item)
         {
-            foreach (var entry in entries)
-            {
-                if(item.Key.Equals(entry.key) && item.Value.Equals(entry.value))
-                {
-                    return true;
-                }
-            }
-            return false;
+            return TryGetValue(item.Key, out TValue value) && EqualityComparer<TValue>.Default.Equals(value, item.Value);
         }
 
         public bool ContainsKey(TKey key)
         {
-            foreach (var item in this.Keys)
-            {
-                if (item.Equals(key))
-                {
-                    return true;
-                }
-            }
-            return false;
+            return Keys.Contains(key);
         }
 
         public void CopyTo(KeyValuePair<TKey, TValue>[] array, int arrayIndex)
         {
-            throw new NotImplementedException();
+            for (int i = 0; i < Count; i++)
+            {
+                array[arrayIndex + i] = new KeyValuePair<TKey, TValue>(entries[i].key, entries[i].value);
+            }
         }
 
         public void CopyTo(Array array, int index)
@@ -141,12 +144,39 @@ namespace AlgorithmProgramming.Datastructures
 
         public void GetObjectData(SerializationInfo info, StreamingContext context)
         {
-            throw new NotImplementedException();
+            info.AddValue("count", Count);
+            info.AddValue("capacity", capacity);
+            info.AddValue("entries", entries.Where(entry => entry.hashCode != 0 && !entry.isDeleted).ToArray());
         }
 
         public void OnDeserialization(object? sender)
         {
-            throw new NotImplementedException();
+            if (entries != null)
+            {
+                return;
+            }
+
+            SerializationInfo? info = (SerializationInfo?)sender;
+            if (info == null)
+            {
+                throw new SerializationException("SerializationInfo is missing.");
+            }
+
+            Count = info.GetInt32("count");
+            capacity = info.GetInt32("capacity");
+            entries = (Entry[])info.GetValue("entries", typeof(Entry[]));
+
+            Keys = new List<TKey>();
+            Values = new List<TValue>();
+
+            foreach (var entry in entries)
+            {
+                if (entry.hashCode != 0 && !entry.isDeleted)
+                {
+                    Keys.Add(entry.key);
+                    Values.Add(entry.value);
+                }
+            }
         }
 
         public bool Remove(TKey key)
@@ -158,6 +188,8 @@ namespace AlgorithmProgramming.Datastructures
                 if (!entries[index].isDeleted && entries[index].key.Equals(key))
                 {
                     entries[index].isDeleted = true;
+                    Keys.Remove(key);
+                    Values.Remove(entries[index].value);
                     Count--;
                     return true;
                 }
@@ -168,7 +200,7 @@ namespace AlgorithmProgramming.Datastructures
 
         public bool Remove(KeyValuePair<TKey, TValue> item)
         {
-            throw new NotImplementedException();
+            return Remove(item.Key);
         }
 
         private void Resize()
