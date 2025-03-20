@@ -1,6 +1,6 @@
 ﻿namespace AlgorithmProgramming.Models
 {
-    public class Stock
+    public class Stock : IComparable<Stock>
     {
         public string Ticker { get; set; }
         public string Name { get; set; }
@@ -13,6 +13,11 @@
             Name = name;
             Date = date;
             Price = price;
+        }
+
+        public int CompareTo(Stock? obj)
+        {
+            return Price.CompareTo(obj.Price);
         }
     }
 
