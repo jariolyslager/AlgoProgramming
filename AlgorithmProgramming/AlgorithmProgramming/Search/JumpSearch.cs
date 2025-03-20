@@ -10,7 +10,7 @@ namespace AlgorithmProgramming.Search
 {
     public class JumpSearch
     {
-        public static int SearchJump<T>(ArrayList list, T key) where T : IComparable<T>
+        public static int SearchJump(ArrayList list, double key)
         {
             int listSize = list.Count;
             int prev = 0;
@@ -19,9 +19,9 @@ namespace AlgorithmProgramming.Search
             // Go through the list in jumps
             while (prev < listSize)
             {
-                // Check if the first element is not null
-                object? currentElement = list[Math.Min(step, listSize) - 1];
-                if (currentElement != null && ((T)currentElement).CompareTo(key) < 0)
+                var currentElement = list[Math.Min(step, listSize) - 1] as Stock;
+
+                if (currentElement != null && currentElement.Price < key)
                 {
                     prev = step;
                     step += (int)Math.Sqrt(listSize);
@@ -41,8 +41,8 @@ namespace AlgorithmProgramming.Search
             // Lineair search from the last step
             while (prev < Math.Min(step, listSize))
             {
-                object? currentElement = list[prev];
-                if (currentElement != null && ((T)currentElement).CompareTo(key) == 0)
+                var currentElement = list[prev] as Stock;
+                if (currentElement != null && currentElement.Price == key)
                 {
                     return prev;
                 }
