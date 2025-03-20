@@ -3,12 +3,9 @@ using System.Collections.Specialized;
 
 namespace AlgorithmProgramming.Datastructures
 {
-    public class ArrayList : ICloneable, IList, INotifyCollectionChanged
+    public class ArrayList<T> : ICloneable, IList<T>
     {
-        private object?[] items = new object?[0];
-
-        public event NotifyCollectionChangedEventHandler? CollectionChanged;
-
+        private T?[] items = new T?[0];
         public bool IsFixedSize => false;
 
         public bool IsReadOnly => false;
@@ -25,7 +22,7 @@ namespace AlgorithmProgramming.Datastructures
         /// <param name="index">Index to get or set</param>
         /// <returns>The object at the specified index</returns>
         /// <exception cref="ArgumentOutOfRangeException">Index out of range</exception>
-        public object? this[int index]
+        public T? this[int index]
         {
             get
             {
@@ -38,7 +35,6 @@ namespace AlgorithmProgramming.Datastructures
                 if (index < 0 || index >= Count)
                     throw new ArgumentOutOfRangeException(nameof(index));
                 items[index] = value;
-                CollectionChanged?.Invoke(this, new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Reset));
             }
         }
 
@@ -47,12 +43,11 @@ namespace AlgorithmProgramming.Datastructures
         /// </summary>
         /// <param name="value">The object to be added</param>
         /// <returns>The position into which the new element was inserted</returns>
-        public int Add(object? value)
+        public void Add(T? value)
         {
             EnsureCapacity(Count + 1);
             items[Count] = value;
-            CollectionChanged?.Invoke(this, new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Add, value));
-            return Count++;
+            Count++;
         }
 
         /// <summary>
@@ -64,7 +59,6 @@ namespace AlgorithmProgramming.Datastructures
             {
                 Array.Clear(items, 0, Count);
                 Count = 0;
-                CollectionChanged?.Invoke(this, new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Reset));
             }
         }
 
@@ -74,8 +68,8 @@ namespace AlgorithmProgramming.Datastructures
         /// <returns>Copy of the ArrayList</returns>
         public object Clone()
         {
-            ArrayList clone = new ArrayList();
-            clone.items = (object?[])items.Clone();
+            ArrayList<T> clone = new ArrayList<T>();
+            clone.items = (T?[])items.Clone();
             clone.Count = Count;
             return clone;
         }
@@ -85,11 +79,11 @@ namespace AlgorithmProgramming.Datastructures
         /// </summary>
         /// <param name="value">Object to find in the ArrayList</param>
         /// <returns>True if found, otherwise false</returns>
-        public bool Contains(object? value)
+        public bool Contains(T? value)
         {
             foreach (var item in items)
             {
-                if (item.Equals(value))
+                if (item?.Equals(value) == true)
                 {
                     return true;
                 }
@@ -102,7 +96,7 @@ namespace AlgorithmProgramming.Datastructures
         /// </summary>
         /// <param name="array">Array to copy to</param>
         /// <param name="index">Index at which copying begins</param>
-        public void CopyTo(Array array, int index)
+        public void CopyTo(T?[] array, int index)
         {
             Array.Copy(items, 0, array, index, Count);
         }
@@ -117,7 +111,7 @@ namespace AlgorithmProgramming.Datastructures
             {
                 int newCapacity = items.Length == 0 ? 4 : items.Length * 2;
                 if (newCapacity < min) newCapacity = min;
-                var newItems = new object?[newCapacity];
+                var newItems = new T?[newCapacity];
                 Array.Copy(items, newItems, Count);
                 items = newItems;
             }
@@ -127,12 +121,17 @@ namespace AlgorithmProgramming.Datastructures
         /// Returns an enumerator that iterates through the ArrayList
         /// </summary>
         /// <returns>An enumerator</returns>
-        public IEnumerator GetEnumerator()
+        public IEnumerator<T?> GetEnumerator()
         {
-            foreach (var item in items)
+            for (int i = 0; i < Count; i++)
             {
-                yield return item;
+                yield return items[i];
             }
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return GetEnumerator();
         }
 
         /// <summary>
@@ -140,13 +139,13 @@ namespace AlgorithmProgramming.Datastructures
         /// </summary>
         /// <param name="value">The object to locate</param>
         /// <returns>The index of the object</returns>
-        public int IndexOf(object? value)
+        public int IndexOf(T? value)
         {
-            foreach (var item in items)
+            for (int i = 0; i < Count; i++)
             {
-                if (item.Equals(value))
+                if (items[i]?.Equals(value) == true)
                 {
-                    return Array.IndexOf(items, item);
+                    return i;
                 }
             }
             return -1;
@@ -158,7 +157,7 @@ namespace AlgorithmProgramming.Datastructures
         /// <param name="index">Index at which the object should be inserted</param>
         /// <param name="value">The object to be inserted</param>
         /// <exception cref="ArgumentOutOfRangeException">Index out of range</exception>
-        public void Insert(int index, object? value)
+        public void Insert(int index, T? value)
         {
             if (index < 0 || index > Count)
             {
@@ -167,21 +166,22 @@ namespace AlgorithmProgramming.Datastructures
             EnsureCapacity(Count + 1);
             Array.Copy(items, index, items, index + 1, Count - index);
             items[index] = value;
-            Count++;
-            CollectionChanged?.Invoke(this, new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Add, value));
         }
 
         /// <summary>
         /// Removes the object from the ArrayList
         /// </summary>
         /// <param name="value">The object to remove</param>
-        public void Remove(object? value)
+        /// <returns>True if the object was removed, otherwise false</returns>
+        public bool Remove(T? value)
         {
             int index = IndexOf(value);
             if (index != -1)
             {
                 RemoveAt(index);
+                return true;
             }
+            return false;
         }
 
         /// <summary>
@@ -201,8 +201,7 @@ namespace AlgorithmProgramming.Datastructures
             {
                 Array.Copy(items, index + 1, items, index, Count - index);
             }
-            items[Count] = null;
-            CollectionChanged?.Invoke(this, new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Remove));
+            items[Count] = default;
         }
     }
 }
