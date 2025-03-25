@@ -67,7 +67,21 @@ namespace AlgorithmProgramming.Datastructures
                     throw new KeyNotFoundException();
                 }
             }
-            set => entries[GetBucketIndex(key)].value = value;
+            set
+            {
+                int index = GetBucketIndex(key);
+                while (entries[index].hashCode != 0)
+                {
+                    if (!entries[index].isDeleted && entries[index].key.Equals(key))
+                    {
+                        entries[index].value = value;
+                        return;
+                    }
+                    index = (index + 1) % capacity;
+                }
+
+                Add(key, value);
+            }
         }
 
         public ICollection<TKey> Keys { get; private set; }
