@@ -67,7 +67,7 @@ namespace AlgorithmProgramming.Datastructures
                     throw new KeyNotFoundException();
                 }
             }
-            set => Add(key, value);
+            set => entries[GetBucketIndex(key)].value = value;
         }
 
         public ICollection<TKey> Keys { get; private set; }
@@ -100,8 +100,7 @@ namespace AlgorithmProgramming.Datastructures
             {
                 if (entries[index].key.Equals(key))
                 {
-                    entries[index].key = key;
-                    entries[index].value = value;
+                    throw new ArgumentException("An item with the same key has already been added.");
                 }
                 index = (index + 1) % capacity;
             }
