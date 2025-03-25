@@ -13,6 +13,7 @@ namespace AlgorithmProgramming.ViewModels
     {
         public Datastructures.ArrayList<Stock> Stocks { get; set; } = new Datastructures.ArrayList<Stock>();
         public Datastructures.DoublyLinkedList<Stock> StocksLinkedList { get; set; } = new Datastructures.DoublyLinkedList<Stock>();
+        public Datastructures.HashMap<string, Stock> StocksHashMap { get; set; } = new Datastructures.HashMap<string, Stock>();
         public ObservableCollection<Stock> StockCollection { get; set; } = new ObservableCollection<Stock>();
         public string LastAction { get; set; } = "Geen";
         public string LastActionString => LastAction + " " + stopwatch.ElapsedMilliseconds + " ms";
@@ -36,14 +37,27 @@ namespace AlgorithmProgramming.ViewModels
                         Stocks.Clear();
                         StocksLinkedList.Clear();
                         StockCollection.Clear();
+                        StocksHashMap.Clear();
                         foreach (var stock in stockList.Stocks)
                         {
                             Stocks.Add(stock);
                             StocksLinkedList.Add(stock);
+                            if (StocksHashMap.TryGetValue(stock.Ticker, out var existingStock))
+                            {
+                                if (stock.Date.CompareTo(existingStock.Date) > 0)
+                                {
+                                    StocksHashMap[stock.Ticker] = stock;
+                                }
+                            }
+                            else
+                            {
+                                StocksHashMap.Add(stock.Ticker, stock);
+                            }
                         }                    
                     }
                     OnPropertyChanged(nameof(Stocks));
                     OnPropertyChanged(nameof(StocksLinkedList));
+                    OnPropertyChanged(nameof(StocksHashMap));
                     SetTableToArrayList();
                 }
 
@@ -88,6 +102,17 @@ namespace AlgorithmProgramming.ViewModels
         {
             StockCollection.Clear();
             foreach (Stock stock in StocksLinkedList)
+            {
+                StockCollection.Add(stock);
+            }
+        }
+
+        [RelayCommand]
+        public void SetTableToHashMap()
+        {
+            StockCollection.Clear();
+
+            foreach (var stock in StocksHashMap.Values)
             {
                 StockCollection.Add(stock);
             }

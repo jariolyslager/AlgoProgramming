@@ -30,6 +30,9 @@
             <Button
                  Text="DoublyLinkedList Table"
                  Command="{Binding SetTableToDoublyLinkedListCommand}"/>
+            <Button
+                 Text="HashMap Table"
+                 Command="{Binding SetTableToHashMapCommand}"/>
         </HorizontalStackLayout>
         <HorizontalStackLayout Grid.Row="1" HorizontalOptions="Start" VerticalOptions="Center" Spacing="5">
                 <Entry Placeholder="Search" Text="{Binding SearchText, StringFormat='{0:F0}'}" />
