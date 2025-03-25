@@ -10,46 +10,41 @@ namespace AlgorithmProgramming.Search
 {
     public class JumpSearch
     {
-        public static int SearchJump(ArrayList list, double key)
+        public List<Stock> JumpSearchByDate(List<Stock> stocks, DateTime targetDate)
         {
-            int listSize = list.Count;
+            int listSize = stocks.Count;
             int prev = 0;
             int step = (int)Math.Sqrt(listSize);
 
+            List<Stock> result = new List<Stock>();
+
             // Go through the list in jumps
-            while (prev < listSize)
+            while (stocks[Math.Min(step, listSize) - 1].Date < targetDate)
             {
-                var currentElement = list[Math.Min(step, listSize) - 1] as Stock;
+                prev = step;
+                step += (int)Math.Sqrt(listSize);
 
-                if (currentElement != null && currentElement.Price < key)
+                // If we go outside of the array size the key is not in the list
+                if (prev >= listSize)
                 {
-                    prev = step;
-                    step += (int)Math.Sqrt(listSize);
-
-                    // If we go outside of the array size the key is not in the list
-                    if (prev >= listSize)
-                    {
-                        return -1; //Key is not in array
-                    }
-                }
-                else
-                {
-                    break; // Stop if the element was found
+                    return result; // Return empty list
                 }
             }
-            
+
             // Lineair search from the last step
-            while (prev < Math.Min(step, listSize))
+            for (int i = prev; i < listSize; i++)
             {
-                var currentElement = list[prev] as Stock;
-                if (currentElement != null && currentElement.Price == key)
+                if (stocks[i].Date.Equals(targetDate))
                 {
-                    return prev;
+                    result.Add(stocks[i]);
                 }
-                prev++;
+                else if (stocks[i].Date > targetDate)
+                {
+                    break;
+                }
             }
 
-            return -1; // Key not found
+            return result;
         }
     }
 }
