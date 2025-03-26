@@ -114,7 +114,8 @@ namespace AlgorithmProgramming.Datastructures
             {
                 if (entries[index].key.Equals(key))
                 {
-                    throw new ArgumentException("An item with the same key has already been added.");
+                    entries[index].value = value;
+                    return;
                 }
                 index = (index + 1) % capacity;
             }
