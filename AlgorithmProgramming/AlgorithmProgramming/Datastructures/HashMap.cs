@@ -69,20 +69,7 @@ namespace AlgorithmProgramming.Datastructures
             }
             set
             {
-                int index = GetBucketIndex(key);
-                while (entries[index].hashCode != 0)
-                {
-                    Console.WriteLine(entries[index].key);
-                    if (!entries[index].isDeleted && entries[index].key.Equals(key))
-                    {
-                        Console.WriteLine(entries[index].key);
-                        entries[index].value = value;
-                        return;
-                    }
-                    index = (index + 1) % capacity;
-                }
-                
-                Add(key, value);
+                TryInsert(key, value);
             }
         }
 
@@ -343,6 +330,36 @@ namespace AlgorithmProgramming.Datastructures
             value = default!;
             return false;
         }
+
+        public bool TryInsert(TKey key, TValue value)
+        {
+            if (Count >= threshold)
+            {
+                Resize();
+            }
+            int index = GetBucketIndex(key);
+            while (entries[index].hashCode != 0 && !entries[index].isDeleted)
+            {
+                if (entries[index].key.Equals(key))
+                {
+                    entries[index].value = value;
+                    return true;
+                }
+                index = (index + 1) % capacity;
+            }
+            entries[index] = new Entry
+            {
+                hashCode = key.GetHashCode(),
+                key = key,
+                value = value,
+                next = -1,
+                isDeleted = false
+            };
+            Keys.Add(key);
+            Values.Add(value);
+            Count++;
+            return true;
+        }   
 
         /// <summary>
         /// Returns an enumerator that iterates through the HashMap.
