@@ -70,18 +70,18 @@ namespace AlgorithmProgramming.Datastructures
             set
             {
                 int index = GetBucketIndex(key);
-                int originalIndex = index;
-                do
+                while (entries[index].hashCode != 0)
                 {
+                    Console.WriteLine(entries[index].key);
                     if (!entries[index].isDeleted && entries[index].key.Equals(key))
                     {
+                        Console.WriteLine(entries[index].key);
                         entries[index].value = value;
                         return;
                     }
                     index = (index + 1) % capacity;
-                } while (entries[index].hashCode != 0 && index != originalIndex);
-
-                Remove(key);
+                }
+                
                 Add(key, value);
             }
         }
