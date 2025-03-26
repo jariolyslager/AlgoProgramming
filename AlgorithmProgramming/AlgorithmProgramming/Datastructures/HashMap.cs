@@ -70,7 +70,8 @@ namespace AlgorithmProgramming.Datastructures
             set
             {
                 int index = GetBucketIndex(key);
-                while (entries[index].hashCode != 0)
+                int originalIndex = index;
+                do
                 {
                     if (!entries[index].isDeleted && entries[index].key.Equals(key))
                     {
@@ -78,8 +79,9 @@ namespace AlgorithmProgramming.Datastructures
                         return;
                     }
                     index = (index + 1) % capacity;
-                }
+                } while (entries[index].hashCode != 0 && index != originalIndex);
 
+                Remove(key);
                 Add(key, value);
             }
         }
