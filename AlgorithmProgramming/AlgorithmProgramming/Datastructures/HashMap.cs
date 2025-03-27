@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AlgorithmProgramming.Models;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
@@ -69,7 +70,7 @@ namespace AlgorithmProgramming.Datastructures
             }
             set
             {
-                TryInsert(key, value);
+                TryInsert(key, value, true);
             }
         }
 
@@ -93,34 +94,7 @@ namespace AlgorithmProgramming.Datastructures
         /// <exception cref="ArgumentException">Exception in case of duplicate key.</exception>
         public void Add(TKey key, TValue value)
         {
-            if (Count >= threshold)
-            {
-                Resize();
-            }
-
-            int index = GetBucketIndex(key);
-            while (entries[index].hashCode != 0 && !entries[index].isDeleted)
-            {
-                if (entries[index].key.Equals(key))
-                {
-                    entries[index].value = value;
-                    return;
-                }
-                index = (index + 1) % capacity;
-            }
-
-            entries[index] = new Entry
-            {
-                hashCode = key.GetHashCode(),
-                key = key,
-                value = value,
-                next = -1,
-                isDeleted = false
-            };
-
-            Keys.Add(key);
-            Values.Add(value);
-            Count++;
+            TryInsert(key, value, overwrite: false);
         }
 
         /// <summary>
@@ -331,22 +305,39 @@ namespace AlgorithmProgramming.Datastructures
             return false;
         }
 
-        public bool TryInsert(TKey key, TValue value)
+        private void TryInsert(TKey key, TValue value, bool overwrite)
         {
             if (Count >= threshold)
             {
                 Resize();
             }
+
             int index = GetBucketIndex(key);
-            while (entries[index].hashCode != 0 && !entries[index].isDeleted)
+            int firstDeletedIndex = -1;
+
+            while (entries[index].hashCode != 0)
             {
-                if (entries[index].key.Equals(key))
+                if (entries[index].isDeleted)
                 {
-                    entries[index].value = value;
-                    return true;
+                    if (firstDeletedIndex == -1)
+                        firstDeletedIndex = index;
+                }
+                else if (entries[index].key.Equals(key))
+                {
+                    if (overwrite)
+                    {
+                        entries[index].value = value;
+                    }
+                    return;
                 }
                 index = (index + 1) % capacity;
             }
+
+            if (firstDeletedIndex != -1)
+            {
+                index = firstDeletedIndex;
+            }
+
             entries[index] = new Entry
             {
                 hashCode = key.GetHashCode(),
@@ -355,11 +346,17 @@ namespace AlgorithmProgramming.Datastructures
                 next = -1,
                 isDeleted = false
             };
-            Keys.Add(key);
-            Values.Add(value);
+
+            if (!Keys.Contains(key))
+            {
+                Keys.Add(key);
+            }
+            if (!Values.Contains(value))
+            {
+                Values.Add(value);
+            }
             Count++;
-            return true;
-        }   
+        }
 
         /// <summary>
         /// Returns an enumerator that iterates through the HashMap.

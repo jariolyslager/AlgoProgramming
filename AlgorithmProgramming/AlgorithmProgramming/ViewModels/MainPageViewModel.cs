@@ -112,9 +112,9 @@ namespace AlgorithmProgramming.ViewModels
         {
             StockCollection.Clear();
 
-            foreach (var stock in StocksHashMap.Values)
+            foreach (var stock in StocksHashMap)
             {
-                StockCollection.Add(stock);
+                StockCollection.Add(stock.Value);
             }
         }
 

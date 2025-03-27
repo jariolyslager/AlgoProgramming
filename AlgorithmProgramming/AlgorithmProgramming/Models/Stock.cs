@@ -1,4 +1,6 @@
-﻿namespace AlgorithmProgramming.Models
+﻿using Microsoft.UI.Xaml.Controls;
+
+namespace AlgorithmProgramming.Models
 {
     public class Stock : IComparable<Stock>
     {
@@ -18,6 +20,11 @@
         public int CompareTo(Stock? obj)
         {
             return Price.CompareTo(obj.Price);
+        }
+
+        public override string ToString()
+        {
+            return $"{Ticker} - {Name} - {Date} - {Price}";
         }
     }
 
