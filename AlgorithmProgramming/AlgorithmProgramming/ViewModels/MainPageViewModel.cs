@@ -136,7 +136,23 @@ namespace AlgorithmProgramming.ViewModels
         [RelayCommand]
         public void JumpSearch()
         {
-            
+            LastAction = "ArrayList JumpSearch";
+            stopwatch.Reset();
+            stopwatch.Start();
+
+            DateTime searchDate = SearchDate;
+
+            var search = new Search.JumpSearch();
+            var results = search.JumpSearchByDate(Stocks, searchDate);
+
+            StockCollection.Clear();
+            foreach (var stock in results)
+            {
+                StockCollection.Add(stock);
+            }
+
+            stopwatch.Stop();
+            OnPropertyChanged(nameof(LastActionString));
         }
     }
 }

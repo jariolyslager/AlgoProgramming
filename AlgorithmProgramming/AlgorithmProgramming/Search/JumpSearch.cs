@@ -10,16 +10,22 @@ namespace AlgorithmProgramming.Search
 {
     public class JumpSearch
     {
-        public List<Stock> JumpSearchByDate(List<Stock> stocks, DateTime targetDate)
+        /// <summary>
+        /// Search on a sorted stocks list to find all entries matching a specific date
+        /// </summary>
+        /// <param name="stocks">A sorted ArrayList of Stocks</param>
+        /// <param name="targetDate">DateTime to search for</param>
+        /// <returns>An ArrayList containing all stocks from the given date</returns>
+        public Datastructures.ArrayList<Stock> JumpSearchByDate(IList<Stock> stocks, DateTime targetDate)
         {
             int listSize = stocks.Count;
             int prev = 0;
             int step = (int)Math.Sqrt(listSize);
 
-            List<Stock> result = new List<Stock>();
+            var result = new Datastructures.ArrayList<Stock>();
 
             // Go through the list in jumps
-            while (stocks[Math.Min(step, listSize) - 1].Date < targetDate)
+            while (prev < listSize && stocks[Math.Min(step, listSize) - 1].Date < targetDate)
             {
                 prev = step;
                 step += (int)Math.Sqrt(listSize);
