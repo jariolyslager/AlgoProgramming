@@ -19,6 +19,21 @@ namespace AlgorithmProgramming.ViewModels
         public string LastActionString => LastAction + " " + stopwatch.ElapsedMilliseconds + " ms";
         public Stopwatch stopwatch = new Stopwatch();
         public string SearchText { get; set; } = "";
+
+        private DateTime searchDate = DateTime.Today;
+        public DateTime SearchDate
+        {
+            get => searchDate;
+            set
+            {
+                if (searchDate != value)
+                {
+                    searchDate = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
         public event PropertyChangedEventHandler? PropertyChanged;
 
         [RelayCommand]

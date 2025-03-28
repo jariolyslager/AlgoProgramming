@@ -36,6 +36,7 @@
         </HorizontalStackLayout>
         <HorizontalStackLayout Grid.Row="1" HorizontalOptions="Start" VerticalOptions="Center" Spacing="5">
                 <Entry Placeholder="Search" Text="{Binding SearchText, StringFormat='{0:F0}'}" />
+                <DatePicker Date="{Binding SearchDate}" />
             <Button
                 Text="ArrayList JumpSearch"
                 Command="{Binding JumpSearchCommand}" />
