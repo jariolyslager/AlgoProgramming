@@ -101,6 +101,25 @@ namespace AlgorithmProgramming.ViewModels
             SetTableToArrayList();
             OnPropertyChanged(nameof(LastActionString));
         }
+        
+        [RelayCommand]
+        public void BubbleSort()
+        {
+            LastAction = "BubbleSort HashMap";
+            stopwatch.Reset();
+            stopwatch.Start();
+
+            var sortedHashMap = Sorting.BubbleSort.SortHashMapByPrice(StocksHashMap);
+
+            StockCollection.Clear();
+            foreach (var stock in sortedHashMap)
+            {
+                StockCollection.Add(stock);
+            }
+
+            stopwatch.Stop();
+            OnPropertyChanged(nameof(LastActionString));
+        }
 
         [RelayCommand]
         public void SetTableToArrayList()

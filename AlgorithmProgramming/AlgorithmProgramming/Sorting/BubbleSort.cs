@@ -15,11 +15,10 @@ namespace AlgorithmProgramming.Sorting
         /// </summary>
         /// <param name="inputMap">A HashMap with stock tickers as keys and Stock objects as values.</param>
         /// <returns>A new HashMap with stocks sorted by price in ascending order.</returns>
-        public static HashMap<string, Stock> SortHashMapByPrice(HashMap<string, Stock> inputMap)
+        public static List<Stock> SortHashMapByPrice(HashMap<string, Stock> inputMap)
         {
             // Put the hashmap values in a list
             List<Stock> stockList = new List<Stock>(inputMap.Values);
-            var sortedMap = new HashMap<string, Stock>();
 
             int listSize = stockList.Count;
             bool swapped;
@@ -49,13 +48,7 @@ namespace AlgorithmProgramming.Sorting
             }
 
 
-            // Put sorted values in a hashmap
-            foreach (var stock in stockList)
-            {
-                sortedMap.Add(stock.Ticker, stock);
-            }
-
-            return sortedMap;
+            return stockList;
         }
     }
 }
