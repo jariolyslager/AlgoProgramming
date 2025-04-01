@@ -112,6 +112,8 @@ namespace AlgorithmProgramming.ViewModels
             stopwatch.Start();
 
             var sortedHashMap = Sorting.BubbleSort.SortHashMapByPrice(StocksHashMap);
+            
+            stopwatch.Stop();
 
             StockCollection.Clear();
             foreach (var stock in sortedHashMap)
@@ -119,7 +121,6 @@ namespace AlgorithmProgramming.ViewModels
                 StockCollection.Add(stock);
             }
 
-            stopwatch.Stop();
             OnPropertyChanged(nameof(LastActionString));
         }
 
@@ -158,21 +159,24 @@ namespace AlgorithmProgramming.ViewModels
         public void JumpSearch()
         {
             LastAction = "ArrayList JumpSearch";
-            stopwatch.Reset();
-            stopwatch.Start();
 
             DateTime searchDate = SearchDate;
 
             var search = new Search.JumpSearch();
-            var results = search.JumpSearchByDate(Stocks, searchDate);
 
+            stopwatch.Reset();
+            stopwatch.Start();
+
+            var results = search.JumpSearchByDate(Stocks, searchDate);
+            
+            stopwatch.Stop();
             StockCollection.Clear();
+
             foreach (var stock in results)
             {
                 StockCollection.Add(stock);
             }
-
-            stopwatch.Stop();
+            
             OnPropertyChanged(nameof(LastActionString));
         }
     }
