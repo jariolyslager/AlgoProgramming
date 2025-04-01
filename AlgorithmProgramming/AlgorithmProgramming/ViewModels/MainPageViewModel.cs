@@ -61,7 +61,9 @@ namespace AlgorithmProgramming.ViewModels
                             {
                                 if (stock.Date.CompareTo(existingStock.Date) > 0)
                                 {
-                                    StocksHashMap[stock.Ticker] = stock;
+                                    StocksHashMap.Remove(stock.Ticker);
+                                    StocksHashMap.Add(stock.Ticker, stock);
+                                    //StocksHashMap[stock.Ticker] = stock;
                                 }
                             }
                             else
