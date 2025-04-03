@@ -62,14 +62,14 @@ namespace AlgorithmProgramming.ViewModels
                                 if (stock.Date.CompareTo(existingStock.Date) > 0)
                                 {
                                     StocksHashMap.Remove(stock.Ticker);
-                                    StocksHashMap.Add(stock.Ticker, stock)
+                                    StocksHashMap.Add(stock.Ticker, stock);
                                 }
                             }
                             else
                             {
                                 StocksHashMap.Add(stock.Ticker, stock);
                             }
-                        }                    
+                        }
                     }
                     OnPropertyChanged(nameof(Stocks));
                     OnPropertyChanged(nameof(StocksLinkedList));
@@ -102,7 +102,7 @@ namespace AlgorithmProgramming.ViewModels
             SetTableToArrayList();
             OnPropertyChanged(nameof(LastActionString));
         }
-        
+
         [RelayCommand]
         public void BubbleSort()
         {
@@ -111,7 +111,7 @@ namespace AlgorithmProgramming.ViewModels
             stopwatch.Start();
 
             var sortedHashMap = Sorting.BubbleSort.SortHashMapByPrice(StocksHashMap);
-            
+
             stopwatch.Stop();
 
             StockCollection.Clear();
@@ -127,7 +127,7 @@ namespace AlgorithmProgramming.ViewModels
         public void SetTableToArrayList()
         {
             StockCollection.Clear();
-            foreach(Stock stock in Stocks)
+            foreach (Stock stock in Stocks)
             {
                 StockCollection.Add(stock);
             }
@@ -167,7 +167,7 @@ namespace AlgorithmProgramming.ViewModels
             stopwatch.Start();
 
             var results = search.JumpSearchByDate(Stocks, searchDate);
-            
+
             stopwatch.Stop();
             StockCollection.Clear();
 
@@ -175,7 +175,26 @@ namespace AlgorithmProgramming.ViewModels
             {
                 StockCollection.Add(stock);
             }
-            
+
+            OnPropertyChanged(nameof(LastActionString));
+        }
+
+        [RelayCommand]
+        public void LinearSearch()
+        {
+            LastAction = "Doubly Linked List LinearSearch";
+            string ticker = SearchText;
+            stopwatch.Reset();
+            stopwatch.Start();
+            var results = Search.LinearSearch.SearchDoublyLinkedList(StocksLinkedList, ticker);
+
+            stopwatch.Stop();
+            StockCollection.Clear();
+            foreach (var stock in results)
+            {
+                StockCollection.Add(stock);
+            }
+
             OnPropertyChanged(nameof(LastActionString));
         }
     }

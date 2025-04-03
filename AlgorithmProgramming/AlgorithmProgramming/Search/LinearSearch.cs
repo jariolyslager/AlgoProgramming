@@ -23,19 +23,16 @@ namespace AlgorithmProgramming.Search
             return -1;
         }
 
-        public static List<Stock> SearchDoublyLinkedList<T>(DoublyLinkedList<T> list, T key) where T : IComparable<T>
+        public static List<Stock> SearchDoublyLinkedList(DoublyLinkedList<Stock> list, string key)
         {
-            DoublyLinkedList<T>.Node? node = list.Head;
+            DoublyLinkedList<Stock>.Node? node = list.Head;
             int index = 0;
             List<Stock> foundResults = new List<Stock>();
             while (node != null)
             {
-                if (node.Data.CompareTo(key) == 0)
+                if (node.Data.Ticker.Equals(key))
                 {
-                    if (node.Data is Stock stockData)
-                    {
-                        foundResults.Add(stockData);
-                    }
+                    foundResults.Add(node.Data);
                 }
                 node = node.Next;
                 index++;
