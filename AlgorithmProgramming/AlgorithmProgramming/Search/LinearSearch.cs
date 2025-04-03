@@ -37,14 +37,8 @@ namespace AlgorithmProgramming.Search
                 node = node.Next;
                 index++;
             }
-            if (foundResults.Count > 0)
-            {
-                return foundResults;
-            }
-            else
-            {
-                throw new KeyNotFoundException("This key doesn't exist");
-            }
+
+            return foundResults;
         }
     }
 }
