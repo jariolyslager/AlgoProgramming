@@ -11,18 +11,6 @@ namespace AlgorithmProgramming.Search
 {
     public class LinearSearch
     {
-        public static int Search<T>(IList<T> list, T key) where T : IComparable<T>
-        {
-            for (int i = 0; i < list.Count; i++)
-            {
-                if (list[i].CompareTo(key) == 0)
-                {
-                    return i;
-                }
-            }
-            return -1;
-        }
-
         public static List<Stock> SearchDoublyLinkedList(DoublyLinkedList<Stock> list, string key)
         {
             DoublyLinkedList<Stock>.Node? node = list.Head;
