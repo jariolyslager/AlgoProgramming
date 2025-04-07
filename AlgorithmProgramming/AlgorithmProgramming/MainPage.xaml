@@ -15,6 +15,7 @@
             <RowDefinition Height="50" />
             <RowDefinition Height="50" />
             <RowDefinition Height="50" />
+            <RowDefinition Height="50" />
             <RowDefinition Height="*" />
             <RowDefinition Height="100" />
         </Grid.RowDefinitions>
@@ -22,9 +23,6 @@
             <Button
                  Text="Input JSON"
                  Command="{Binding PickFileCommand}"/>
-            <Button
-                 Text="ArrayList Quicksort"
-                 Command="{Binding QuickSortCommand}"/>
             <Button
                  Text="ArrayList Table"
                  Command="{Binding SetTableToArrayListCommand}"/>
@@ -34,24 +32,29 @@
             <Button
                  Text="HashMap Table"
                  Command="{Binding SetTableToHashMapCommand}"/>
+        </HorizontalStackLayout>
+        <HorizontalStackLayout Grid.Row="1" HorizontalOptions="Start" VerticalOptions="Center" Spacing="5">
+            <Button
+                 Text="ArrayList Quicksort"
+                 Command="{Binding QuickSortCommand}"/>
             <Button
                  Text="Bubblesort HashMap"
                  Command="{Binding BubbleSortCommand}"/>
         </HorizontalStackLayout>
-        <HorizontalStackLayout Grid.Row="1" HorizontalOptions="Start" VerticalOptions="Center" Spacing="5">
+        <HorizontalStackLayout Grid.Row="2" HorizontalOptions="Start" VerticalOptions="Center" Spacing="5">
             <Entry Placeholder="Search" Text="{Binding SearchText, StringFormat='{0:F0}'}" WidthRequest="100" />
             <Button
                 Text="DoublyLinkedList LinearSearch"
-                Command="{Binding LinearSearchCommand}" />    
+                Command="{Binding LinearSearchCommand}" />
         </HorizontalStackLayout>
-        <HorizontalStackLayout Grid.Row="2" Spacing="5" VerticalOptions="Center">
+        <HorizontalStackLayout Grid.Row="3" Spacing="5" VerticalOptions="Center">
             <DatePicker Date="{Binding SearchDate}" />
             <Button
                 Text="ArrayList JumpSearch"
                 Command="{Binding JumpSearchCommand}" />
         </HorizontalStackLayout>
 
-        <CollectionView ItemsSource="{Binding StockCollection}" Grid.Row="3">
+        <CollectionView ItemsSource="{Binding StockCollection}" Grid.Row="4">
             <CollectionView.ItemTemplate>
                 <DataTemplate x:DataType="models:Stock">
                     <Grid Padding="10" ColumnDefinitions="*,*,*,*">
@@ -63,7 +66,7 @@
                 </DataTemplate>
             </CollectionView.ItemTemplate>
         </CollectionView>
-        <Grid Grid.Row="4">
+        <Grid Grid.Row="5">
             <Grid.RowDefinitions>
                 <RowDefinition Height="*" />
                 <RowDefinition Height="*" />
