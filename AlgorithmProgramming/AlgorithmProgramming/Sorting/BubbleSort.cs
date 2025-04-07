@@ -1,7 +1,4 @@
-﻿using AlgorithmProgramming.Datastructures;
-using AlgorithmProgramming.Models;
-
-namespace AlgorithmProgramming.Sorting
+﻿namespace AlgorithmProgramming.Sorting
 {
     internal class BubbleSort
     {
