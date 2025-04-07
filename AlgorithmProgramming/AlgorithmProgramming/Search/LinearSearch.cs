@@ -28,5 +28,24 @@ namespace AlgorithmProgramming.Search
 
             return foundResults;
         }
+
+        public static List<Stock> GenericSearchDoublyLinkedList<T>(DoublyLinkedList<T> list, string key)
+        {
+            DoublyLinkedList<T>.Node? node = list.Head;
+            int index = 0;
+            List<Stock> foundResults = new List<Stock>();
+            while (node != null)
+            {
+                if(node.Data is Stock stock && stock.Ticker.Equals(key))
+                {
+                    foundResults.Add(stock);
+                }
+                
+                node = node.Next;
+                index++;
+            }
+
+            return foundResults;
+        }
     }
 }
