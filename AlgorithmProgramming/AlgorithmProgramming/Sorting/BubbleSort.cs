@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using AlgorithmProgramming.Datastructures;
+﻿using AlgorithmProgramming.Datastructures;
 using AlgorithmProgramming.Models;
 
 namespace AlgorithmProgramming.Sorting
@@ -11,16 +6,16 @@ namespace AlgorithmProgramming.Sorting
     internal class BubbleSort
     {
         /// <summary>
-        /// Sorts a HashMap of stocks in ascending order based on stock price using the Bubble Sort algorithm.
+        /// Sorts a IEnumerable collection based on a comparer using the bubble sort algorithm.
         /// </summary>
-        /// <param name="inputMap">A HashMap with stock tickers as keys and Stock objects as values.</param>
-        /// <returns>A new HashMap with stocks sorted by price in ascending order.</returns>
-        public static List<Stock> SortHashMapByPrice(HashMap<string, Stock> inputMap)
+        /// <param name="inputCollection">IEnumerable with values to sort.</param>
+        /// <param name="comparer"> A comparer to compare the stocks.</param>
+        /// <returns>A new List with the sorted values.</returns>
+        public static List<T> Sort<T>(IEnumerable<T> inputCollection, IComparer<T> comparer)
         {
-            // Put the hashmap values in a list
-            List<Stock> stockList = new List<Stock>(inputMap.Values);
+            List<T> itemList = new List<T>(inputCollection);
 
-            int listSize = stockList.Count;
+            int listSize = itemList.Count;
             bool swapped;
 
             // Bubble sort on the list
@@ -29,13 +24,13 @@ namespace AlgorithmProgramming.Sorting
                 swapped = false;
                 for (int j = 0; j < listSize - 1 - i; j++)
                 {
-                    // Compare adjacent stock prices
-                    if (stockList[j].Price > stockList[j+1].Price)
+                    // Use comparer to compare stocks
+                    if (comparer.Compare(itemList[j], itemList[j + 1]) > 0)
                     {
                         // Swap if the previous price is higher then the next
-                        var temp = stockList[j];
-                        stockList[j] = stockList[j+1];
-                        stockList[j+1] = temp;
+                        var temp = itemList[j];
+                        itemList[j] = itemList[j+1];
+                        itemList[j+1] = temp;
                         swapped = true;
                     }
                 }
@@ -47,8 +42,18 @@ namespace AlgorithmProgramming.Sorting
                 }
             }
 
+            return itemList;
+        }
 
-            return stockList;
+        /// <summary>
+        /// Sorts a IEnumerable collection based on a default comparer using the bubble sort algorithm.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="inputCollection">IEnumerable with values to sort.</param>
+        /// <returns>A new List with the sorted values.</returns>
+        public static List<T> Sort<T>(IEnumerable<T> inputCollection) where T : IComparable<T>
+        {
+            return Sort(inputCollection, Comparer<T>.Default);
         }
     }
 }

@@ -110,7 +110,7 @@ namespace AlgorithmProgramming.ViewModels
             stopwatch.Reset();
             stopwatch.Start();
 
-            var sortedHashMap = Sorting.BubbleSort.SortHashMapByPrice(StocksHashMap);
+            var sortedHashMap = Sorting.BubbleSort.Sort(StocksHashMap.Values);
 
             stopwatch.Stop();
 

@@ -1,6 +1,4 @@
-﻿using Microsoft.UI.Xaml.Controls;
-
-namespace AlgorithmProgramming.Models
+﻿namespace AlgorithmProgramming.Models
 {
     public class Stock : IComparable<Stock>
     {
@@ -27,6 +25,39 @@ namespace AlgorithmProgramming.Models
             return $"{Ticker} - {Name} - {Date} - {Price}";
         }
     }
+
+    public class StockTickerComparer : IComparer<Stock>
+    {
+        public int Compare(Stock x, Stock y)
+        {
+            return string.Compare(x.Ticker, y.Ticker, StringComparison.OrdinalIgnoreCase);
+        }
+    }
+
+    public class StockNameComparer : IComparer<Stock>
+    {
+        public int Compare(Stock x, Stock y)
+        {
+            return string.Compare(x.Name, y.Name, StringComparison.OrdinalIgnoreCase);
+        }
+    }
+
+    public class StockDateComparer : IComparer<Stock>
+    {
+        public int Compare(Stock x, Stock y)
+        {
+            return x.Date.CompareTo(y.Date);
+        }
+    }
+
+    public class StockPriceComparer : IComparer<Stock>
+    {
+        public int Compare(Stock x, Stock y)
+        {
+            return x.Price.CompareTo(y.Price);
+        }
+    }
+
 
     public class StockList
     {
