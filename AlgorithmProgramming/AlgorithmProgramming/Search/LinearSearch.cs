@@ -29,6 +29,12 @@ namespace AlgorithmProgramming.Search
             return foundResults;
         }
 
+        /// <summary>
+        /// Linear search through a DoublyLinkedList of generic type T.
+        /// </summary>
+        /// <param name="list">The Doubly Linked List that is being searched.</param>
+        /// <param name="key">The key that's filled in into the search bar in the GUI.</param>
+        /// <returns></returns>
         public static List<Stock> GenericSearchDoublyLinkedList<T>(DoublyLinkedList<T> list, string key)
         {
             DoublyLinkedList<T>.Node? node = list.Head;
