@@ -159,14 +159,13 @@ namespace AlgorithmProgramming.ViewModels
         {
             LastAction = "ArrayList JumpSearch";
 
-            DateTime searchDate = SearchDate;
-
-            var search = new Search.JumpSearch();
-
             stopwatch.Reset();
             stopwatch.Start();
 
-            var results = search.JumpSearchByDate(Stocks, searchDate);
+            Stock searchStock = new Stock("", "", SearchDate, 0);
+            var comparer = new StockDateComparer();
+
+            var results = Search.JumpSearch.Search(Stocks, comparer, searchStock);
 
             stopwatch.Stop();
             StockCollection.Clear();

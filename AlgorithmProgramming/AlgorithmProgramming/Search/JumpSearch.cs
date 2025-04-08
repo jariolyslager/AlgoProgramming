@@ -11,26 +11,27 @@ namespace AlgorithmProgramming.Search
     public class JumpSearch
     {
         /// <summary>
-        /// Search on a sorted stocks list to find all entries matching a specific date
+        /// Generic Jump Search on a sorted list using a comparer.
         /// </summary>
-        /// <param name="stocks">A sorted ArrayList of Stocks</param>
-        /// <param name="targetDate">DateTime to search for</param>
-        /// <returns>An ArrayList containing all stocks from the given date</returns>
-        public Datastructures.ArrayList<Stock> JumpSearchByDate(IList<Stock> stocks, DateTime targetDate)
+        /// <typeparam name="T">Type of the objects in the list</typeparam>
+        /// <param name="list">A sorted list of type T</param>
+        /// <param name="comparer">Comparer for comparing elements</param>
+        /// <param name="key">The item to search for</param>
+        /// <returns>A list containing all matching items</returns>
+        public static List<T> Search<T>(IList<T> list, IComparer<T> comparer, T key)
         {
-            int listSize = stocks.Count;
+            int listSize = list.Count;
             int prev = 0;
             int step = (int)Math.Sqrt(listSize);
 
-            var result = new Datastructures.ArrayList<Stock>();
+            List<T> result = new List<T>();
 
             // Go through the list in jumps
-            while (prev < listSize && stocks[Math.Min(step, listSize) - 1].Date < targetDate)
+            while (prev < listSize && comparer.Compare(list[Math.Min(step, listSize) - 1], key) < 0)
             {
                 prev = step;
                 step += (int)Math.Sqrt(listSize);
 
-                // If we go outside of the array size the key is not in the list
                 if (prev >= listSize)
                 {
                     return result; // Return empty list
@@ -38,13 +39,14 @@ namespace AlgorithmProgramming.Search
             }
 
             // Lineair search from the last step
-            for (int i = prev; i < listSize; i++)
+            for (int i = prev; i < Math.Min(step, listSize); i++)
             {
-                if (stocks[i].Date.Equals(targetDate))
+                int comparison = comparer.Compare(list[i], key);
+                if (comparison == 0)
                 {
-                    result.Add(stocks[i]);
+                    result.Add(list[i]);
                 }
-                else if (stocks[i].Date > targetDate)
+                else if (comparison > 0)
                 {
                     break;
                 }
