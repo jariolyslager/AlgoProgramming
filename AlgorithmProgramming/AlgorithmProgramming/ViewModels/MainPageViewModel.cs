@@ -186,7 +186,9 @@ namespace AlgorithmProgramming.ViewModels
             string ticker = SearchText;
             stopwatch.Reset();
             stopwatch.Start();
-            var results = Search.LinearSearch.GenericSearchDoublyLinkedList(StocksLinkedList, ticker);
+            Stock stockToFind = new Stock(ticker, "", DateTime.Today, 0);
+            StockTickerComparer stockToFindComparer = new StockTickerComparer();
+            var results = Search.LinearSearch.SearchDoublyLinkedList(StocksLinkedList, stockToFindComparer, stockToFind);
 
             stopwatch.Stop();
             StockCollection.Clear();
