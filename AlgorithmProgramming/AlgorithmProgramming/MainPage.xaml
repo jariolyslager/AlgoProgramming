@@ -1,0 +1,89 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="AlgorithmProgramming.MainPage"
+             xmlns:viewModels="clr-namespace:AlgorithmProgramming.ViewModels"
+             xmlns:models="clr-namespace:AlgorithmProgramming.Models"
+             x:DataType="viewModels:MainPageViewModel" 
+             Shell.NavBarIsVisible="false">
+    <ContentPage.BindingContext>
+        <viewModels:MainPageViewModel/>
+    </ContentPage.BindingContext>
+
+    <Grid Padding="10" RowSpacing="5">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="50" />
+            <RowDefinition Height="50" />
+            <RowDefinition Height="50" />
+            <RowDefinition Height="50" />
+            <RowDefinition Height="50" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="100" />
+        </Grid.RowDefinitions>
+        <HorizontalStackLayout Grid.Row="0" HorizontalOptions="Start" VerticalOptions="Center" Spacing="5">
+            <Button
+                 Text="Input JSON"
+                 Command="{Binding PickFileCommand}"/>
+        </HorizontalStackLayout>
+        <HorizontalStackLayout Grid.Row="1" HorizontalOptions="Start" VerticalOptions="Center" Spacing="5">
+            <Label Text="Change table view to" VerticalOptions="Center"/>
+            <Button
+                 Text="ArrayList"
+                 Command="{Binding SetTableToArrayListCommand}"/>
+            <Button
+                 Text="DoublyLinkedList"
+                 Command="{Binding SetTableToDoublyLinkedListCommand}"/>
+            <Button
+                 Text="HashMap"
+                 Command="{Binding SetTableToHashMapCommand}"/>
+        </HorizontalStackLayout>
+        <HorizontalStackLayout Grid.Row="2" HorizontalOptions="Start" VerticalOptions="Center" Spacing="5">
+            <Label Text="Sorting" VerticalOptions="Center"/>
+            <Button
+                 Text="ArrayList Quicksort price"
+                 Command="{Binding QuickSortCommand}"/>
+            <Button
+                 Text="HashMap Bubblesort ticker"
+                 Command="{Binding BubbleSortCommand}"/>
+        </HorizontalStackLayout>
+        <HorizontalStackLayout Grid.Row="3" HorizontalOptions="Start" VerticalOptions="Center" Spacing="5">
+            <Label Text="Search by ticker" VerticalOptions="Center"/>
+            <Entry Placeholder="Search ticker" Text="{Binding SearchText, StringFormat='{0:F0}'}" WidthRequest="150" />
+            <Button
+                Text="DoublyLinkedList LinearSearch"
+                Command="{Binding LinearSearchCommand}" />
+        </HorizontalStackLayout>
+        <HorizontalStackLayout Grid.Row="4" Spacing="5" VerticalOptions="Center">
+            <Label Text="Search by date" VerticalOptions="Center"/>
+            <DatePicker Date="{Binding SearchDate}" />
+            <Button
+                Text="ArrayList JumpSearch"
+                Command="{Binding JumpSearchCommand}" />
+        </HorizontalStackLayout>
+
+        <CollectionView ItemsSource="{Binding StockCollection}" Grid.Row="5">
+            <CollectionView.ItemTemplate>
+                <DataTemplate x:DataType="models:Stock">
+                    <Grid Padding="10" ColumnDefinitions="*,*,*,*">
+                        <Label Text="{Binding Ticker}" Grid.Column="0" />
+                        <Label Text="{Binding Name}" Grid.Column="1" />
+                        <Label Text="{Binding Price}" Grid.Column="2" />
+                        <Label Text="{Binding Date}" Grid.Column="3" />
+                    </Grid>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+        <Grid Grid.Row="6">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            <Label Grid.Row="0"  Text="{Binding Stocks.Count, StringFormat='Aantal objecten in ArrayList: {0:F0}'}" />
+            <Label Grid.Row="1" Text="{Binding StocksLinkedList.Count, StringFormat='Aantal objecten in DoublyLinkedList: {0:F0}'}" />
+            <Label Grid.Row="2" Text="{Binding StocksHashMap.Count, StringFormat='Aantal objecten in Hashmap: {0:F0}'}" />
+            <Label Grid.Row="3" Text="{Binding LastActionString, StringFormat='Laatste actie: {0:F0}'}" />
+        </Grid>
+    </Grid>
+</ContentPage>
