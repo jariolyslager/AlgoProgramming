@@ -114,7 +114,6 @@ namespace AlgorithmProgramming.ViewModels
 
             stopwatch.Stop();
 
-            StockCollection.Clear();
             StockCollection = new ObservableCollection<Stock>(sortedHashMap);
             OnPropertyChanged(nameof(StockCollection));
 
@@ -124,7 +123,6 @@ namespace AlgorithmProgramming.ViewModels
         [RelayCommand]
         public void SetTableToArrayList()
         {
-            StockCollection.Clear();
             StockCollection = new ObservableCollection<Stock>(Stocks);
             OnPropertyChanged(nameof(StockCollection));
         }
@@ -132,7 +130,6 @@ namespace AlgorithmProgramming.ViewModels
         [RelayCommand]
         public void SetTableToDoublyLinkedList()
         {
-            StockCollection.Clear();
             StockCollection = new ObservableCollection<Stock>(StocksLinkedList);
             OnPropertyChanged(nameof(StockCollection));
         }
@@ -162,7 +159,6 @@ namespace AlgorithmProgramming.ViewModels
             var results = Search.JumpSearch.Search(Stocks, comparer, searchStock);
 
             stopwatch.Stop();
-            StockCollection.Clear();
 
             StockCollection = new ObservableCollection<Stock>(results);
             OnPropertyChanged(nameof(StockCollection));
@@ -182,7 +178,6 @@ namespace AlgorithmProgramming.ViewModels
             var results = Search.LinearSearch.SearchDoublyLinkedList(StocksLinkedList, stockToFindComparer, stockToFind);
 
             stopwatch.Stop();
-            StockCollection.Clear();
             StockCollection = new ObservableCollection<Stock>(results);
             OnPropertyChanged(nameof(StockCollection));
 
