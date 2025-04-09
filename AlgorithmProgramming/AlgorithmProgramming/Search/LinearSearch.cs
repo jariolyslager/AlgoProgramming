@@ -15,8 +15,9 @@ namespace AlgorithmProgramming.Search
         /// Linear search through a DoublyLinkedList of generic type T.
         /// </summary>
         /// <param name="list">The Doubly Linked List that is being searched.</param>
+        /// <param name="comparer">The comparer that is used to compare the objects in the list.</param>
         /// <param name="key">The key that's filled in into the search bar in the GUI.</param>
-        /// <returns></returns>
+        /// <returns>List of Stocks with a ticker equal to the provided key.</returns>
         public static List<T> SearchDoublyLinkedList<T>(DoublyLinkedList<T> list, IComparer<T> comparer, T key)
         {
             DoublyLinkedList<T>.Node? node = list.Head;

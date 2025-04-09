@@ -36,6 +36,11 @@ namespace AlgorithmProgramming.ViewModels
 
         public event PropertyChangedEventHandler? PropertyChanged;
 
+        /// <summary>
+        /// Picks a file using the FilePicker
+        /// </summary>
+        /// <param name="options">Options for customizing the behaviour of FilePicker</param>
+        /// <returns></returns>
         [RelayCommand]
         public async Task<FileResult> PickFile(PickOptions options)
         {
@@ -82,15 +87,24 @@ namespace AlgorithmProgramming.ViewModels
             catch (Exception ex)
             {
                 // The user canceled or something went wrong
+                Console.WriteLine($"Error picking file: {ex.Message}");
             }
 
             return null;
         }
+
+        /// <summary>
+        /// Raises the PropertyChanged event for the specified property
+        /// </summary>
+        /// <param name="propertyName">Name of the property</param>
         protected void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
+        /// <summary>
+        /// Method for performing the QuickSort
+        /// </summary>
         [RelayCommand]
         public void QuickSort()
         {
@@ -103,6 +117,9 @@ namespace AlgorithmProgramming.ViewModels
             OnPropertyChanged(nameof(LastActionString));
         }
 
+        /// <summary>
+        /// Method for performing the BubbleSort
+        /// </summary>
         [RelayCommand]
         public void BubbleSort()
         {
@@ -120,6 +137,9 @@ namespace AlgorithmProgramming.ViewModels
             OnPropertyChanged(nameof(LastActionString));
         }
 
+        /// <summary>
+        /// Method to convert the datatable to an ArrayList
+        /// </summary>
         [RelayCommand]
         public void SetTableToArrayList()
         {
@@ -127,6 +147,9 @@ namespace AlgorithmProgramming.ViewModels
             OnPropertyChanged(nameof(StockCollection));
         }
 
+        /// <summary>
+        /// Method to convert the datatable to a DoublyLinkedList
+        /// </summary>
         [RelayCommand]
         public void SetTableToDoublyLinkedList()
         {
@@ -134,6 +157,9 @@ namespace AlgorithmProgramming.ViewModels
             OnPropertyChanged(nameof(StockCollection));
         }
 
+        /// <summary>
+        /// Method to convert the datatable to a HashMap
+        /// </summary>
         [RelayCommand]
         public void SetTableToHashMap()
         {
@@ -145,6 +171,9 @@ namespace AlgorithmProgramming.ViewModels
             }
         }
 
+        /// <summary>
+        /// Method for performing the JumpSearch
+        /// </summary>
         [RelayCommand]
         public void JumpSearch()
         {
@@ -166,6 +195,9 @@ namespace AlgorithmProgramming.ViewModels
             OnPropertyChanged(nameof(LastActionString));
         }
 
+        /// <summary>
+        /// Method for performing the LinearSearch
+        /// </summary>
         [RelayCommand]
         public void LinearSearch()
         {
