@@ -148,13 +148,20 @@ namespace AlgorithmProgramming.ViewModels
         [RelayCommand]
         public void JumpSearch()
         {
-            LastAction = "ArrayList JumpSearch";
+            var comparer = new StockDateComparer();
+
+            stopwatch.Reset();
+            stopwatch.Start();
+            Quicksort.Sort(Stocks, comparer);
+            stopwatch.Stop();
+            var quickSortTime = stopwatch.ElapsedMilliseconds;
+
+            LastAction = "ArrayList QuickSort " + quickSortTime + " ms, ArrayList JumpSearch";
 
             stopwatch.Reset();
             stopwatch.Start();
 
             Stock searchStock = new Stock("", "", SearchDate, 0);
-            var comparer = new StockDateComparer();
 
             var results = Search.JumpSearch.Search(Stocks, comparer, searchStock);
 
