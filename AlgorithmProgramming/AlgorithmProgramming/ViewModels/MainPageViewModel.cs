@@ -115,10 +115,8 @@ namespace AlgorithmProgramming.ViewModels
             stopwatch.Stop();
 
             StockCollection.Clear();
-            foreach (var stock in sortedHashMap)
-            {
-                StockCollection.Add(stock);
-            }
+            StockCollection = new ObservableCollection<Stock>(sortedHashMap);
+            OnPropertyChanged(nameof(StockCollection));
 
             OnPropertyChanged(nameof(LastActionString));
         }
@@ -127,20 +125,16 @@ namespace AlgorithmProgramming.ViewModels
         public void SetTableToArrayList()
         {
             StockCollection.Clear();
-            foreach (Stock stock in Stocks)
-            {
-                StockCollection.Add(stock);
-            }
+            StockCollection = new ObservableCollection<Stock>(Stocks);
+            OnPropertyChanged(nameof(StockCollection));
         }
 
         [RelayCommand]
         public void SetTableToDoublyLinkedList()
         {
             StockCollection.Clear();
-            foreach (Stock stock in StocksLinkedList)
-            {
-                StockCollection.Add(stock);
-            }
+            StockCollection = new ObservableCollection<Stock>(StocksLinkedList);
+            OnPropertyChanged(nameof(StockCollection));
         }
 
         [RelayCommand]
@@ -170,10 +164,8 @@ namespace AlgorithmProgramming.ViewModels
             stopwatch.Stop();
             StockCollection.Clear();
 
-            foreach (var stock in results)
-            {
-                StockCollection.Add(stock);
-            }
+            StockCollection = new ObservableCollection<Stock>(results);
+            OnPropertyChanged(nameof(StockCollection));
 
             OnPropertyChanged(nameof(LastActionString));
         }
@@ -191,10 +183,8 @@ namespace AlgorithmProgramming.ViewModels
 
             stopwatch.Stop();
             StockCollection.Clear();
-            foreach (var stock in results)
-            {
-                StockCollection.Add(stock);
-            }
+            StockCollection = new ObservableCollection<Stock>(results);
+            OnPropertyChanged(nameof(StockCollection));
 
             OnPropertyChanged(nameof(LastActionString));
         }
